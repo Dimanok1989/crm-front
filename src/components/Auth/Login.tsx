@@ -6,6 +6,7 @@ import useFormdata from "@/hooks/useFormdata";
 import { useEffect, useState } from "react";
 import { axios } from "@/hooks/useAxios";
 import Registration from "./Registration";
+import Message from "../Views/Message";
 
 interface LoginProps {
     render?: boolean;
@@ -16,6 +17,7 @@ const Login = ({ render }: LoginProps) => {
     const app = useCrmContext();
     const { formdata, handleChange } = useFormdata({});
     const [login, setLogin] = useState(false);
+    const [error, setError] = useState<null | string>(null);
     const [isRegistration, setIsRegistration] = useState<boolean>(false);
 
     useEffect(() => {
@@ -25,7 +27,7 @@ const Login = ({ render }: LoginProps) => {
                     app.setData(data);
                 })
                 .catch(error => {
-
+                    setError(error?.response?.data?.message || error?.message);
                 })
                 .then((() => {
                     setLogin(false);
@@ -39,14 +41,17 @@ const Login = ({ render }: LoginProps) => {
 
     return <div className="w-screen h-screen flex items-start justify-center py-7 px-4">
         <Card className="w-96">
+
             <Image src="/favicon.ico" width={50} height={50} centered />
             <Header as="h2" className="text-center !mt-2">Авторизация</Header>
-            <Form loading={login} className="mb-4">
+
+            <Form loading={login} className="mb-4" error={Boolean(error)}>
                 <Form.Input
                     label="Логин"
                     placeholder="Введите логин"
                     name="login"
                     onChange={handleChange}
+                    error={Boolean(error)}
                 />
                 <Form.Input
                     label="Пароль"
@@ -54,18 +59,25 @@ const Login = ({ render }: LoginProps) => {
                     type="password"
                     name="password"
                     onChange={handleChange}
+                    error={Boolean(error)}
                 />
+
+                {error && <Message error content={error} size="tiny" />}
+
                 <Button
                     content="Войти"
                     icon="sign-in"
                     fluid
                     color="green"
                     onClick={() => setLogin(true)}
+                    className="!mt-5"
                 />
+
                 <div className="text-center mt-3">
                     {render && <a className="cursor-pointer" onClick={() => setIsRegistration(true)}>Регистрация</a>}
                     {!render && <Link href="/auth/registration">Регистрация</Link>}
                 </div>
+
             </Form>
         </Card>
     </div>
