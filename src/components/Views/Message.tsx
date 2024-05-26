@@ -2,8 +2,6 @@ import { MessageProps, Message as SemanticMessage } from "semantic-ui-react"
 
 const Message = (props: MessageProps) => {
 
-    let className = `${props.className || ""} `;
-
     return <SemanticMessage
         {...props}
         className={`

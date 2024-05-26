@@ -1,14 +1,11 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { useRouter } from "next/router";
 import { axios } from "@/hooks/useAxios";
-
-interface CrmProviderProps {
-    children: React.ReactNode;
-}
+import { SemanticICONS } from "semantic-ui-react";
 
 interface ProviderValues {
-    loading?: boolean;
-    data?: null|object;
+    loading: boolean;
+    data: AppData;
     setData?: any;
     isLogin?: boolean;
     sidebarOpen?: boolean;
@@ -16,18 +13,32 @@ interface ProviderValues {
     closeSidebar?: () => void;
 }
 
-// create new context
-export const AppContext = React.createContext<ProviderValues>({});
+export type MenuItemProps = {
+    route: string;
+    name: string;
+    icon?: SemanticICONS;
+}
 
-type LoginData = {
-    profile: any;
+type AppData = {
+    profile?: any;
+    menu?: MenuItemProps[],
     token?: string;
+}
+
+// create new context
+export const AppContext = React.createContext<ProviderValues>({
+    loading: true,
+    data: {},
+});
+
+interface CrmProviderProps {
+    children: React.ReactNode;
 }
 
 export function CrmProvider({ children }: CrmProviderProps) {
 
     const [loading, setLoading] = React.useState(true);
-    const [data, setData] = React.useState<null|LoginData>(null);
+    const [data, setData] = React.useState<AppData>({});
     const [isLogin, setIsLogin] = React.useState(false);
     const [sidebarOpen, setSidebarOpen] = React.useState(false);
     const router = useRouter();
