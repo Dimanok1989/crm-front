@@ -1,5 +1,5 @@
 'use client';
-import Axios from "axios";
+import Axios, { AxiosError } from "axios";
 import { makeUseAxios } from "axios-hooks";
 
 const defaultHeaders = {
@@ -29,5 +29,12 @@ axios.interceptors.request.use(
 );
 
 const useAxios = makeUseAxios({ axios });
+
+export function getError(e: any): null | string {
+    return e?.response?.data?.message
+        || e?.response?.statusText
+        || e?.message
+        || "Неизвестная ошибка";
+}
 
 export default useAxios;

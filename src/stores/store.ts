@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import darkModeReducer from './darkModeSlice'
-import leads from './leads'
+import leads from './leads';
+import fields from './fields';
 
 export const store = configureStore({
   reducer: {
     leads,
+    fields,
     // darkMode: darkModeReducer,
   },
 })

@@ -15,7 +15,8 @@ const useFormdata = (data: object = {}): any => {
     return {
         formdata,
         handleChange,
-        clear
+        clear,
+        setFormdata
     }
 }
 

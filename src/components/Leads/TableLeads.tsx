@@ -46,16 +46,18 @@ const TableRow = (props: LeadResource) => {
     const router = useRouter();
 
     return <Table.Row className="cursor-default">
-        <Table.Cell>
-            <Dropdown
-                icon={null}
-                trigger={<span className="px-2"><Icon name="ellipsis vertical" link fitted /></span>}
-                options={[
-                    { key: 'details', text: 'Подробнее', icon: "eye", onClick: () => router.push(`/leads/${props.id}`) },
-                    { key: 'complete', text: 'Завершить', icon: "check", disabled: true },
-                    // { key: 'delete', text: 'Удалить', icon: "trash", disabled: true },
-                ]}
-            />
+        <Table.Cell className="max-w-[27px]">
+            <div className="px-3">
+                <Dropdown
+                    icon={null}
+                    trigger={<span className="px-2"><Icon name="ellipsis vertical" link fitted /></span>}
+                    options={[
+                        { key: 'details', text: 'Детали', icon: "eye", onClick: () => router.push(`/leads/${props.id}`) },
+                        { key: 'complete', text: 'Завершить', icon: "check", disabled: true },
+                        { key: 'delete', text: 'Удалить', icon: "trash", disabled: true },
+                    ]}
+                />
+            </div>
         </Table.Cell>
         <Table.Cell>{props.status && <StatusCard {...props.status} />}</Table.Cell>
         <Table.Cell><Link href={`/leads/${props.id}`}>{props.name}</Link></Table.Cell>

@@ -6,7 +6,7 @@ import useApi from "@/hooks/useApi";
 import moment from "moment";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
-import { Feed, Header } from "semantic-ui-react";
+import { Feed, Header, Icon } from "semantic-ui-react";
 
 const ItemValue = (props: any) => <div className="flex items-center p-2 rounded cursor-default hover:bg-slate-50">
     <div className="min-w-[40%]"><strong>{props.text}</strong></div>
@@ -29,15 +29,39 @@ export default function Leads() {
     >
         <div className="flex flex-col gap-5">
 
-            <Header
-                as="h1"
-                content={response?.name}
-                subheader={(response?.name && response.name !== response.number) && response.number}
-            />
+            <div className="flex justify-between items-center">
+                <Header
+                    as="h1"
+                    content={response?.name}
+                    subheader={(response?.name && response.name !== response.number) && response.number}
+                />
+                <div>
+                    <Icon
+                        name="pencil"
+                        link
+                        fitted
+                        title="Изменить заявку"
+                    />
+                </div>
+            </div>
 
             <Card>
-                <ItemValue text={"Статус"} value={<StatusCard {...response?.status || {}} />} />
-                <ItemValue text={"Дата и время события"} value={response?.eventAt && moment(response.eventAt).format("DD.MM.YYYY в HH:mm")} />
+                <ItemValue
+                    text={"Статус"}
+                    value={<StatusCard {...response?.status || {}} />}
+                />
+                <ItemValue
+                    text={"Дата и время события"}
+                    value={response?.eventAt && moment(response.eventAt).format("DD.MM.YYYY в HH:mm")}
+                />
+                <ItemValue
+                    text={"Клиент"}
+                    value={response?.customer?.name}
+                />
+                <ItemValue
+                    text={"Телефон"}
+                    value={response?.customer?.phone}
+                />
             </Card>
 
             {(typeof response?.feeds == "object" && response?.feeds?.length > 0) && <Card>

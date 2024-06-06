@@ -31,3 +31,20 @@ body {
     text-wrap: balance;
   }
 }
+
+.menu-slider {
+  width: 100%;
+  max-width: 0px;
+  position: absolute;
+  top: 0;
+  right: -50px;
+  bottom: 0;
+  display: none;
+  transition: 0.5s ease-in-out !important;
+}
+
+.menu-slider.sidebar-show {
+  display: block;
+  right: 0;
+  max-width: 600px;
+}
