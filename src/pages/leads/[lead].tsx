@@ -1,11 +1,13 @@
 import Content from "@/components/Content";
 import LeadFeed from "@/components/Leads/LeadFeed";
-import { LeadResource, StatusCard } from "@/components/Leads/TableLeads";
+import EditLead from "@/components/Leads/Modals/EditLead";
+import { StatusCard } from "@/components/Leads/TableLeads";
 import Card from "@/components/Views/Card";
 import useApi from "@/hooks/useApi";
+import { FieldProps } from "@/stores/fields";
 import moment from "moment";
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Feed, Header, Icon } from "semantic-ui-react";
 
 const ItemValue = (props: any) => <div className="flex items-center p-2 rounded cursor-default hover:bg-slate-50">
@@ -18,6 +20,8 @@ export default function Leads() {
     const http = useApi({ isLoading: true });
     const params = useParams();
     const { response } = http;
+    const fields: FieldProps[] = response?.fields || [];
+    const [edit, setEdit] = useState<null | number>(null);
 
     useEffect(() => {
         http.get(`/leads/${params.lead}`);
@@ -41,27 +45,41 @@ export default function Leads() {
                         link
                         fitted
                         title="Изменить заявку"
+                        onClick={() => setEdit(response?.id || null)}
+                    />
+                    <EditLead
+                    leadId={edit}
+                    close={() => setEdit(null)}
                     />
                 </div>
             </div>
 
             <Card>
                 <ItemValue
-                    text={"Статус"}
+                    text="Статус"
                     value={<StatusCard {...response?.status || {}} />}
                 />
                 <ItemValue
-                    text={"Дата и время события"}
-                    value={response?.eventAt && moment(response.eventAt).format("DD.MM.YYYY в HH:mm")}
+                    text="Стоимость"
+                    value={response?.price}
                 />
                 <ItemValue
-                    text={"Клиент"}
+                    text="Дата и время события"
+                    value={response?.event_start_at && moment(response.event_start_at).format("DD.MM.YYYY в HH:mm")}
+                />
+                <ItemValue
+                    text="Клиент"
                     value={response?.customer?.name}
                 />
                 <ItemValue
-                    text={"Телефон"}
+                    text="Телефон"
                     value={response?.customer?.phone}
                 />
+                {fields.map((field: FieldProps) => <ItemValue
+                    key={field.id}
+                    text={field.title}
+                    value={null}
+                />)}
             </Card>
 
             {(typeof response?.feeds == "object" && response?.feeds?.length > 0) && <Card>

@@ -8,6 +8,7 @@ export interface FieldProps {
     title: string,
     type: number,
     typeName: string,
+    typeKey: string,
 }
 
 interface FieldsState {

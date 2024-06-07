@@ -67,7 +67,7 @@ const TableRow = (props: LeadResource) => {
                 <small className="opacity-50">{props.customer.phone}</small>
             </div>}
         </Table.Cell>
-        <Table.Cell>{props.eventAt && moment(props.eventAt).format("DD.MM.YYYY в HH:mm")}</Table.Cell>
-        <Table.Cell>{props.createdAt && moment(props.createdAt).format("DD.MM.YYYY в HH:mm")}</Table.Cell>
+        <Table.Cell>{props.event_start_at && moment(props.event_start_at).format("DD.MM.YYYY в HH:mm")}</Table.Cell>
+        <Table.Cell>{props.created_at && moment(props.created_at).format("DD.MM.YYYY в HH:mm")}</Table.Cell>
     </Table.Row>
 }
